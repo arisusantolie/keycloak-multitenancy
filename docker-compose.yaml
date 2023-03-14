@@ -1,0 +1,39 @@
+services:
+  keycloak-demo:
+    image: quay.io/keycloak/keycloak:latest
+    command:
+      - start-dev
+    environment:
+      - "KC-DB=postgres"
+      - "KC_DB_URL_HOST=postgres_demo"
+      - "KC_DB_URL_DATABASE=keycloak"
+      - "KC_DB_USERNAME=postgres"
+      - "KC_DB_PASSWORD=postgres"
+      - "KC_DB_SCHEMA=public"
+      - "KEYCLOAK_ADMIN=admin"
+      - "KEYCLOAK_ADMIN_PASSWORD=admin"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres_demo
+    networks:
+      - backend
+  postgres_demo:
+    container_name: postgres_demo
+    image: "postgres:14.2"
+    environment:
+      - "POSTGRES_USER=postgres"
+      - "POSTGRES_PASSWORD=postgres"
+    networks:
+      - backend
+    volumes:
+      - ./db-data:/var/lib/postgresql/data/
+    ports:
+      - "5435:5435"
+
+
+
+networks:
+  backend:
+    name: backend
+    driver: bridge
