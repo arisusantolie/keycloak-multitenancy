@@ -19,7 +19,6 @@ services:
     networks:
       - backend
   postgres_demo:
-    container_name: postgres_demo
     image: "postgres:14.2"
     environment:
       - "POSTGRES_USER=postgres"
